@@ -19,7 +19,7 @@ Indenting to a specific level:
     'hello'
 
 
-Indenting to a specific (and keeping lines relative):
+Indenting to a specific level (and keeping relative lines in place):
 
 .. code::
 
