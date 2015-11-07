@@ -15,6 +15,11 @@ STRING_TEST_VARIOUS_MULTI_LINES_2 = r"""
     a
 b
 """[1:-1]
+STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE = r"""
+a
+
+    b
+"""[1:-1]
 
 
 class Test_set( object ):
@@ -69,6 +74,34 @@ b
         assert indentation.set(string, level) == expected
 
 
+    @pytest.mark.parametrize( "string,level,expected",
+        [
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE, 0, r"""
+a
 
-if __name__ == '__main__':
-    pytest.main([__file__, "-s"])
+    b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE, 1, r"""
+    a
+
+        b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE, 2, r"""
+        a
+
+            b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE, 3, r"""
+            a
+
+                b
+"""[1:-1]),
+        ]
+    )
+    def test_multi_lines_with_empty_lines( self, string, level, expected ):
+        assert indentation.set(string, level) == expected
+
+
+
+if __name__ == "__main__":
+    pytest.main(__file__)
