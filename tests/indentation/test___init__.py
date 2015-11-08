@@ -20,6 +20,11 @@ a
 
     b
 """[1:-1]
+STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE_AT_BEGINNING = r"""
+
+a
+    b
+"""[1:-1]
 
 
 class Test_set( object ):
@@ -100,6 +105,35 @@ a
     )
     def test_multi_lines_with_empty_lines( self, string, level, expected ):
         assert indentation.set(string, level) == expected
+
+
+    @pytest.mark.parametrize( "string,level,expected",
+        [
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE_AT_BEGINNING, 0, r"""
+
+a
+    b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE_AT_BEGINNING, 1, r"""
+
+    a
+        b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE_AT_BEGINNING, 2, r"""
+
+        a
+            b
+"""[1:-1]),
+            (STRING_TEST_VARIOUS_MULTI_LINES_WITH_EMPTY_LINE_AT_BEGINNING, 3, r"""
+
+            a
+                b
+"""[1:-1]),
+        ]
+    )
+    def test_multi_lines_with_empty_lines2( self, string, level, expected ):
+        assert indentation.set(string, level) == expected
+
 
 
 

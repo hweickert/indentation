@@ -8,29 +8,37 @@ def set( string, target_level, indent_string="    ", indent_empty_lines=False ):
 
 
 def set_lines( lines, target_level, indent_string="    ", indent_empty_lines=False ):
-    """ Sets indentation for the given set of lines. """
+    """ Sets indentation for the given set of :lines:. """
 
-    is_multi_line = len(lines) > 1
-    first_line_original_level = get_line_level( lines[0], indent_string )
+    first_non_empty_line_index = _get_first_non_empty_line_index( lines )
+    first_line_original_level =  get_line_level( lines[first_non_empty_line_index], indent_string )
 
-    for i in range(0, len(lines)):
+    for i in range(first_non_empty_line_index, len(lines)):
         if not indent_empty_lines and lines[i] == "":
             continue
 
         line_i_unindented = get_line_unindented( lines[i], indent_string )
         line_i_level =      get_line_level( lines[i], indent_string )
 
-        if is_multi_line:
-            on_second_line_or_later = i > 0
-            if on_second_line_or_later:
-                first_line_final_level = get_line_level( lines[0], indent_string )
-                relative_indent_move =   first_line_final_level - first_line_original_level
-                target_level =           line_i_level + relative_indent_move
+        on_second_line_or_later = i > first_non_empty_line_index
+        if on_second_line_or_later:
+            first_line_final_level = get_line_level( lines[first_non_empty_line_index], indent_string )
+            relative_indent_move =   first_line_final_level - first_line_original_level
+            target_level =           line_i_level + relative_indent_move
 
         if line_i_level == target_level:
             continue
 
         lines[i] = indent_string * target_level + line_i_unindented
+
+
+def _get_first_non_empty_line_index(lines):
+    i = 0
+    for i, line in enumerate(lines):
+        if line.strip(" ") != "":
+            break
+    return i
+
 
 
 def get_line_level( line, indent_string="    " ):

@@ -5,7 +5,7 @@ import setuptools
 setuptools.setup(
     name = "indentation",
     packages = ["indentation"],
-    version = "1.0.1",
+    version = "1.0.2",
     description="Text indentation functions.",
     author = 'Henry Weickert',
     author_email = 'henryweickert@gmail.com',
